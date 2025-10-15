@@ -1,0 +1,84 @@
+---
+globs: *.vue
+description: Vue.js component development guidelines
+---
+
+# Vue.js Component Guidelines
+
+## Component Structure
+
+Follow this order in Vue Single File Components:
+
+1. `<template>` - HTML template
+2. `<script setup>` - Composition API setup
+3. `<style scoped>` - Component-specific styles
+
+## Composition API Best Practices
+
+- Use `<script setup>` syntax
+- Import composables and stores at the top
+- Use `ref()` for reactive primitives
+- Use `computed()` for derived state
+- Use `onMounted()` for lifecycle hooks
+
+## Props and Events
+
+- Define props with TypeScript-like syntax in comments
+- Use descriptive prop names
+- Emit events with clear names using `defineEmits()`
+
+## Styling Guidelines
+
+- Use `scoped` styles to prevent CSS conflicts
+- Use CSS custom properties for theming
+- Follow BEM methodology for complex class names
+- Use Vuetify's utility classes when possible
+
+## Example Component Structure
+
+```vue
+<template>
+  <div class="component-name">
+    <!-- Template content -->
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from '@/stores/storeName'
+
+// Props
+const props = defineProps({
+  title: String,
+  items: Array
+})
+
+// Emits
+const emit = defineEmits(['update', 'delete'])
+
+// Reactive data
+const loading = ref(false)
+const data = ref([])
+
+// Computed properties
+const filteredData = computed(() => {
+  return data.value.filter(item => item.active)
+})
+
+// Methods
+const handleClick = () => {
+  emit('update', data.value)
+}
+
+// Lifecycle
+onMounted(() => {
+  // Initialization
+})
+</script>
+
+<style scoped>
+.component-name {
+  /* Component styles */
+}
+</style>
+```

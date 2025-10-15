@@ -1,0 +1,38 @@
+---
+alwaysApply: true
+description: Project structure and architecture guidelines
+---
+
+# Project Structure Guide
+
+This is a full-stack Vue.js + Go project with the following structure:
+
+## Frontend (Vue.js + Vuetify)
+
+- **Entry Point**: [frontend/src/main.js](mdc:frontend/src/main.js)
+- **Main Layout**: [frontend/src/components/layout/AppLayout.vue](mdc:frontend/src/components/layout/AppLayout.vue)
+- **Dashboard**: [frontend/src/views/DashboardView.vue](mdc:frontend/src/views/DashboardView.vue)
+- **Stores**: [frontend/src/stores/](mdc:frontend/src/stores/) - Pinia stores for state management
+- **API Client**: [frontend/src/api/client.js](mdc:frontend/src/api/client.js)
+
+## Backend (Go)
+
+- **Main Entry**: [backend/cmd/api/main.go](mdc:backend/cmd/api/main.go)
+- **Handlers**: [backend/internal/handlers/](mdc:backend/internal/handlers/) - HTTP request handlers
+- **Models**: [backend/internal/models/models.go](mdc:backend/internal/models/models.go)
+- **Database**: [backend/internal/database/database.go](mdc:backend/internal/database/database.go)
+- **Migrations**: [backend/migrations/](mdc:backend/migrations/) - Database schema migrations
+
+## Key Features
+
+- User authentication and authorization
+- Project management with CRUD operations
+- Task management with boards and labels
+- Comments and attachments support
+- Responsive dashboard layout with collapsible sidebar
+
+## Development
+
+- Frontend: `cd frontend && npm run dev`
+- Backend: `cd backend && go run cmd/api/main.go`
+- Database migrations: `cd backend && make migrate-up`

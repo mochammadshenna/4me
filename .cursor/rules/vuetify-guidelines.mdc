@@ -1,0 +1,71 @@
+---
+globs: *.vue
+description: Vuetify component usage guidelines
+---
+
+# Vuetify Guidelines
+
+## Component Usage
+- Use Vuetify components instead of custom HTML elements when possible
+- Prefer Vuetify's built-in responsive system
+- Use Vuetify's color system and theme variables
+
+## Layout Components
+- **v-layout**: Main layout wrapper
+- **v-navigation-drawer**: Sidebar navigation
+- **v-main**: Main content area
+- **v-list**: Navigation lists
+- **v-list-item**: Individual navigation items
+
+## Form Components
+- **v-text-field**: Text inputs with validation
+- **v-textarea**: Multi-line text inputs
+- **v-form**: Form wrapper with validation
+- **v-btn**: Buttons with various styles and states
+
+## Dialog Components
+- **v-dialog**: Modal dialogs
+- **v-card**: Card containers for dialog content
+- **v-card-title**: Dialog titles
+- **v-card-text**: Dialog content
+- **v-card-actions**: Dialog action buttons
+
+## Grid and Layout
+- **v-row** and **v-col**: Use for simple grid layouts
+- **CSS Grid**: Use for complex responsive layouts (preferred for dashboard grids)
+
+## Icons
+- Use Material Design Icons (MDI) with `mdi-` prefix
+- Import from `@mdi/font` package
+- Use `v-icon` component for consistent sizing
+
+## Styling
+- Use Vuetify's utility classes when possible
+- Override Vuetify styles with `:deep()` selector when needed
+- Use Vuetify's spacing system (ma-, pa-, etc.)
+
+## Example Usage
+```vue
+<template>
+  <v-dialog v-model="showDialog" max-width="500">
+    <v-card>
+      <v-card-title class="text-h5">Dialog Title</v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+          <v-text-field
+            v-model="formData.name"
+            label="Name"
+            :rules="[v => !!v || 'Name is required']"
+            variant="outlined"
+          />
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn @click="showDialog = false">Cancel</v-btn>
+        <v-btn color="primary" @click="save">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+```

@@ -1,0 +1,75 @@
+---
+globs: *.vue,*.css
+description: Responsive layout and CSS guidelines
+---
+
+# Responsive Layout Guidelines
+
+## Layout System
+
+- Use CSS Grid for complex layouts (stats grids, project grids)
+- Use Flexbox for component alignment and spacing
+- Implement responsive breakpoints consistently
+
+## Sidebar Responsiveness
+
+The main layout uses a collapsible sidebar system:
+
+### Sidebar States
+
+- **Expanded**: 280px width, main content gets `calc(100vw - 280px)`
+- **Collapsed**: 64px width, main content gets `calc(100vw - 64px)`
+- **Mobile**: Sidebar becomes temporary overlay
+
+### CSS Classes for Sidebar States
+
+```css
+/* Expanded sidebar */
+.studybuddy-sidebar:not(.v-navigation-drawer--mini-variant) ~ .v-main
+
+/* Collapsed sidebar */
+.studybuddy-sidebar.v-navigation-drawer--mini-variant ~ .v-main
+```
+
+## Grid Responsiveness
+
+### Stats Grid
+
+- **Mobile**: Single column (`1fr`)
+- **Tablet**: `repeat(auto-fit, minmax(280px, 1fr))`
+- **Desktop**: `repeat(auto-fit, minmax(250px, 1fr))`
+- **Collapsed Sidebar**: `repeat(auto-fit, minmax(200px, 1fr))`
+
+### Projects Grid
+
+- **Mobile**: Single column (`1fr`)
+- **Tablet**: `repeat(auto-fill, minmax(300px, 1fr))`
+- **Desktop**: `repeat(auto-fill, minmax(280px, 1fr))`
+- **Collapsed Sidebar**: `repeat(auto-fill, minmax(250px, 1fr))`
+
+## Breakpoints
+
+```css
+/* Mobile */
+@media (max-width: 768px)
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1199px)
+
+/* Desktop */
+@media (min-width: 1200px)
+
+/* Large Desktop */
+@media (min-width: 1600px)
+
+/* Ultra-wide */
+@media (min-width: 2000px)
+```
+
+## CSS Best Practices
+
+- Use `box-sizing: border-box` for all elements
+- Use `width: 100%` and `max-width: 100%` for responsive containers
+- Use `transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)` for smooth animations
+- Use `overflow-x: hidden` to prevent horizontal scrolling
+- Use `flex: 1` for elements that should fill available space

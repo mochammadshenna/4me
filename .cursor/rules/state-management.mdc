@@ -1,0 +1,111 @@
+---
+globs: frontend/src/stores/*.js
+description: Pinia store management guidelines
+---
+
+# State Management Guidelines
+
+## Store Structure
+Use Pinia stores for global state management. Each store should handle a specific domain:
+
+- **auth.js**: User authentication and user data
+- **projects.js**: Project management and CRUD operations
+- **tasks.js**: Task management and board operations
+- **boards.js**: Board management
+- **labels.js**: Label management
+
+## Store Pattern
+```javascript
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import api from '@/api/client'
+
+export const useStoreName = defineStore('storeName', () => {
+  // State
+  const data = ref([])
+  const loading = ref(false)
+  const error = ref(null)
+
+  // Getters
+  const filteredData = computed(() => {
+    return data.value.filter(item => item.active)
+  })
+
+  // Actions
+  const fetchData = async () => {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await api.get('/endpoint')
+      data.value = response.data
+    } catch (err) {
+      error.value = err.message
+      console.error('Error fetching data:', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const createItem = async (itemData) => {
+    try {
+      const response = await api.post('/endpoint', itemData)
+      data.value.push(response.data)
+      return { success: true, data: response.data }
+    } catch (err) {
+      console.error('Error creating item:', err)
+      return { success: false, error: err.message }
+    }
+  }
+
+  const updateItem = async (id, itemData) => {
+    try {
+      const response = await api.put(`/endpoint/${id}`, itemData)
+      const index = data.value.findIndex(item => item.id === id)
+      if (index !== -1) {
+        data.value[index] = response.data
+      }
+      return { success: true, data: response.data }
+    } catch (err) {
+      console.error('Error updating item:', err)
+      return { success: false, error: err.message }
+    }
+  }
+
+  const deleteItem = async (id) => {
+    try {
+      await api.delete(`/endpoint/${id}`)
+      data.value = data.value.filter(item => item.id !== id)
+      return { success: true }
+    } catch (err) {
+      console.error('Error deleting item:', err)
+      return { success: false, error: err.message }
+    }
+  }
+
+  return {
+    // State
+    data,
+    loading,
+    error,
+    // Getters
+    filteredData,
+    // Actions
+    fetchData,
+    createItem,
+    updateItem,
+    deleteItem
+  }
+})
+```
+
+## Error Handling
+- Always wrap API calls in try-catch blocks
+- Return consistent response objects with `success` and `error` properties
+- Log errors to console for debugging
+- Set loading states appropriately
+
+## API Integration
+- Use the centralized API client from `@/api/client.js`
+- Handle different HTTP methods (GET, POST, PUT, DELETE)
+- Include proper error handling and loading states
+- Return meaningful success/error responses

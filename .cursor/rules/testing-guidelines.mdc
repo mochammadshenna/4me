@@ -1,0 +1,112 @@
+---
+globs: **/*.spec.js,**/*.test.js,**/*_test.go
+description: Testing guidelines for frontend and backend
+---
+
+# Testing Guidelines
+
+## Frontend Testing (Vue.js + Vitest)
+
+### Unit Tests
+- Test component logic and computed properties
+- Mock external dependencies (API calls, stores)
+- Test user interactions and event handling
+- Use `@vue/test-utils` for component testing
+
+### E2E Testing (Playwright)
+- Test complete user workflows
+- Test responsive behavior across different screen sizes
+- Test sidebar collapse/expand functionality
+- Test form submissions and data persistence
+
+### Test Structure
+```javascript
+import { describe, it, expect, beforeEach } from 'vitest'
+import { mount } from '@vue/test-utils'
+import ComponentName from '@/components/ComponentName.vue'
+
+describe('ComponentName', () => {
+  let wrapper
+
+  beforeEach(() => {
+    wrapper = mount(ComponentName, {
+      props: {
+        // test props
+      }
+    })
+  })
+
+  it('should render correctly', () => {
+    expect(wrapper.exists()).toBe(true)
+  })
+
+  it('should handle user interactions', async () => {
+    await wrapper.find('button').trigger('click')
+    expect(wrapper.emitted('event-name')).toBeTruthy()
+  })
+})
+```
+
+## Backend Testing (Go)
+
+### Unit Tests
+- Test individual functions and methods
+- Mock database connections
+- Test error handling paths
+- Use table-driven tests for multiple scenarios
+
+### Integration Tests
+- Test API endpoints with real database
+- Test middleware functionality
+- Test authentication and authorization
+- Test database migrations
+
+### Test Structure
+```go
+func TestFunctionName(t *testing.T) {
+    tests := []struct {
+        name     string
+        input    InputType
+        expected ExpectedType
+        wantErr  bool
+    }{
+        {
+            name:     "valid input",
+            input:    validInput,
+            expected: expectedOutput,
+            wantErr:  false,
+        },
+        {
+            name:     "invalid input",
+            input:    invalidInput,
+            expected: nil,
+            wantErr:  true,
+        },
+    }
+
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            result, err := FunctionName(tt.input)
+            if (err != nil) != tt.wantErr {
+                t.Errorf("FunctionName() error = %v, wantErr %v", err, tt.wantErr)
+                return
+            }
+            if !reflect.DeepEqual(result, tt.expected) {
+                t.Errorf("FunctionName() = %v, want %v", result, tt.expected)
+            }
+        })
+    }
+}
+```
+
+## Test Coverage
+- Aim for >80% code coverage
+- Test both happy path and error conditions
+- Test edge cases and boundary conditions
+- Test performance-critical code paths
+
+## Test Data
+- Use factories for creating test data
+- Use fixtures for complex test scenarios
+- Clean up test data after each test
+- Use unique identifiers to avoid conflicts

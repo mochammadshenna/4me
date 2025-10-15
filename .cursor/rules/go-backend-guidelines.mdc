@@ -1,0 +1,73 @@
+---
+globs: backend/**/*.go
+description: Go backend development guidelines
+---
+
+# Go Backend Guidelines
+
+## Project Structure
+- **cmd/api/main.go**: Application entry point
+- **internal/handlers/**: HTTP request handlers
+- **internal/models/**: Data models and structs
+- **internal/database/**: Database connection and operations
+- **internal/middleware/**: HTTP middleware (auth, CORS, etc.)
+- **internal/config/**: Configuration management
+- **migrations/**: Database schema migrations
+
+## Handler Pattern
+```go
+func HandlerName(c *gin.Context) {
+    // Parse request
+    var req RequestStruct
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(400, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Validate input
+    if err := validateRequest(&req); err != nil {
+        c.JSON(400, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Process request
+    result, err := processRequest(&req)
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Return response
+    c.JSON(200, gin.H{"success": true, "data": result})
+}
+```
+
+## Database Operations
+- Use prepared statements for security
+- Handle database errors appropriately
+- Use transactions for multi-step operations
+- Implement proper connection pooling
+
+## Error Handling
+- Use custom error types when appropriate
+- Log errors with context
+- Return consistent error responses
+- Use HTTP status codes correctly
+
+## Middleware
+- Implement authentication middleware
+- Add CORS middleware for frontend integration
+- Use logging middleware for request tracking
+- Implement rate limiting for security
+
+## Configuration
+- Use environment variables for configuration
+- Provide sensible defaults
+- Validate configuration on startup
+- Use structured configuration structs
+
+## Testing
+- Write unit tests for business logic
+- Use table-driven tests for multiple scenarios
+- Mock external dependencies
+- Test error conditions and edge cases
